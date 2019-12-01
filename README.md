@@ -24,3 +24,10 @@ A project to collect data on, and control my life.
 `service.central-heating` for controlling tp-link smart plugs connected to radiators in my flat
 
 `service.monzo` for getting my Monzo balance data
+
+
+- Add RPC grafana error logging metrics things
+- Add ability to run each service locally without vault
+- Work out a better way to unlock vault
+- Network isolation
+- Minikube

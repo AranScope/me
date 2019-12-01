@@ -7,14 +7,17 @@ import (
 	"net/http"
 )
 
-func handleGetAccounts(w http.ResponseWriter, _ *http.Request, params httprouter.Params) {
+func handleGetBalance(w http.ResponseWriter, _ *http.Request, params httprouter.Params) {
 	creds, err := RetrieveMonzoCredentials()
 	if err != nil {
 		handleError(err, w)
 		return
 	}
 
-	req, err := http.NewRequest(http.MethodGet, "https://api.monzo.com/accounts", nil)
+	accountId := params.ByName("accountid")
+
+	fmt.Println("https://api.monzo.com/balance?account_id=" + accountId)
+	req, err := http.NewRequest(http.MethodGet, "https://api.monzo.com/balance?account_id="+accountId, nil)
 	if err != nil {
 		handleError(err, w)
 		return
