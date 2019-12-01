@@ -70,5 +70,5 @@ func cleanMoneyString(moneyStr string) float64 {
 func main() {
 	router := httprouter.New()
 	router.GET("/balance", GetBalance)
-	_ = http.ListenAndServe(":3002", router)
+	_ = http.ListenAndServe(":8080", router)
 }

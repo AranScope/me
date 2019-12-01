@@ -12,8 +12,20 @@ services:
       context: service.api.vanguard-investor
       dockerfile: Dockerfile
     ports:
-      - 3002:3002
-    env_file: service.api.vanguard-investor/env.vanguard-investor
+      - 3002:8080
+    env_file:
+      - service.api.vanguard-investor/env.vanguard-investor
+      - env.vault
+
+  service.api.monzo:
+    build:
+      context: service.api.monzo
+      dockerfile: Dockerfile
+    ports:
+      - 3004:8080
+    env_file:
+      - service.api.monzo/env.monzo
+      - env.vault
 
   service.vault:
     build:
