@@ -1,0 +1,101 @@
+version: '3.6'
+
+services:
+
+  service.browser:
+    build:
+      context: service.browser
+      dockerfile: Dockerfile
+
+  service.api.vanguard-investor:
+    build:
+      context: service.api.vanguard-investor
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3002
+    env_file: service.api.vanguard-investor/env.vanguard-investor
+
+  service.vault:
+    build:
+      context: service.vault
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./service.vault/config:/vault/config
+      - ./service.vault/policies:/vault/policies
+      - ./service.vault/data:/vault/data
+      - ./service.vault/logs:/vault/logs
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+    command: server -config=/vault/config/vault-config.json
+    cap_add:
+      - IPC_LOCK
+#    depends_on:
+#      - service.consul
+
+#  service.consul:
+#    build:
+#      context: ./service.consul
+#      dockerfile: Dockerfile
+#    ports:
+#      - 8500:8500
+#    command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+#    volumes:
+#      - ./service.consul/config/consul-config.json:/consul/config/config.json
+#      - ./service.consul/data:/consul/data
+#
+#  service.consul-worker:
+#    build:
+#      context: ./service.consul
+#      dockerfile: Dockerfile
+#\z    command: agent -server -join service.consul -config-file=/consul/config/config.json
+#    volumes:
+#      - ./service.consul/config/consul-config.json:/consul/config/config.json
+#    depends_on:
+#      - service.consul
+
+  service.influxdb:
+    build:
+      context: service.influxdb
+      dockerfile: Dockerfile
+    ports:
+      - 8083:8083
+      - 8086:8086
+      - 8090:8090
+    env_file:
+      - service.influxdb/env.influxdb
+    volumes:
+      - ./service.influxdb/data:/var/lib/influxdb
+
+  service.grafana:
+    build:
+      context: service.grafana
+      dockerfile: Dockerfile
+    ports:
+      - 3003:3000
+    env_file:
+      - service.grafana/env.grafana
+    user: "472"
+    links:
+      - service.influxdb
+    volumes:
+      - ./service.grafana/data:/var/lib/grafana
+
+  service.telegraf:
+    build:
+      context: service.telegraf
+      dockerfile: Dockerfile
+    volumes:
+      - ./service.telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./service.grafana/data:/var/lib/grafana
+
+  service.chronograf:
+    build:
+      context: service.chronograf
+      dockerfile: Dockerfile
+    ports:
+      - 8888:8888
+    env_file:
+      - service.chronograf/env.chronograf
+
