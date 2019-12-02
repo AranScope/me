@@ -7,7 +7,7 @@ import (
 
 func main() {
 	service.
-		Init("service.api.vanguard-investor").
+		Init("service.tplink-smart-plug").
 		WithRouter(8080, handlers.Router()).
 		Start()
 }

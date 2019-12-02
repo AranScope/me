@@ -4,14 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/AranScope/hs1xxplug"
+	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 )
-
-type PatchPlugBody struct {
-	State string `json:"state"`
-}
 
 func handlePatchPlug(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
 	ip := params.ByName("ip")
@@ -22,7 +19,7 @@ func handlePatchPlug(w http.ResponseWriter, req *http.Request, params httprouter
 		return
 	}
 
-	body := PatchPlugBody{}
+	body := types.PatchPlugBody{}
 	err = json.Unmarshal(bodyBytes, &body)
 	if err != nil {
 		handleError(err, w)
