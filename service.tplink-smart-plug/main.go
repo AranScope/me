@@ -1,13 +1,13 @@
 package main
 
 import (
-	handlers2 "github.com/AranScope/personal-finance-center/service.tplink-smart-plug/handlers"
-	"net/http"
+	"github.com/AranScope/me/common/service"
+	"github.com/AranScope/me/service.tplink-smart-plug/handlers"
 )
 
 func main() {
-	err := http.ListenAndServe(":8080", handlers2.Router())
-	if err != nil {
-		panic(err)
-	}
+	service.
+		Init("service.api.vanguard-investor").
+		WithRouter(8080, handlers.Router()).
+		Start()
 }

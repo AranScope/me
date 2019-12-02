@@ -14,9 +14,8 @@ func handleGetBalance(w http.ResponseWriter, _ *http.Request, params httprouter.
 		return
 	}
 
-	accountId := params.ByName("accountid")
+	accountId := params.ByName("account_id")
 
-	fmt.Println("https://api.monzo.com/balance?account_id=" + accountId)
 	req, err := http.NewRequest(http.MethodGet, "https://api.monzo.com/balance?account_id="+accountId, nil)
 	if err != nil {
 		handleError(err, w)

@@ -1,0 +1,22 @@
+endpoints:
+#  - path: get_transactions
+#    request:
+#      - name: account_id
+#        type: string
+#      - name: date
+#        type: date
+  - path: get_accounts
+    idempotent: true # does this even matter?
+    request:
+      - name: user_id
+        type: string
+    response:
+      - name: accounts
+        type: array
+        items:
+          - name: account_id
+            type: string
+          - name: balance
+            type: integer
+
+

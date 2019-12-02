@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"github.com/hashicorp/vault/api"
@@ -13,7 +13,7 @@ var passwordKey = os.Getenv("PASSWORD_KEY")
 
 type Credentials struct {
 	Username string
-	password string
+	Password string
 }
 
 func RetrieveVanguardCredentials() (*Credentials, error) {
@@ -34,7 +34,7 @@ func RetrieveVanguardCredentials() (*Credentials, error) {
 
 	return &Credentials{
 		Username: secret.Data[usernameKey].(string),
-		password: secret.Data[passwordKey].(string),
+		Password: secret.Data[passwordKey].(string),
 	}, nil
 }
 

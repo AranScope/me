@@ -1,13 +1,13 @@
 package service_device_registry
 
 import (
+	"github.com/AranScope/me/common/service"
 	"github.com/AranScope/personal-finance-center/service.device-registry/handlers"
-	"net/http"
 )
 
 func main() {
-	err := http.ListenAndServe(":80", handlers.Router())
-	if err != nil {
-		panic(err)
-	}
+	service.
+		Init("service.device-registry").
+		WithRouter(8080, handlers.Router()).
+		Start()
 }

@@ -1,0 +1,27 @@
+endpoints:
+  - path: get_transactions
+    idempotent: true # does this even matter?
+    params:
+      - name: account_id
+        type: string
+#        validation: required (default), optional (could be default?), length > 5, length = 5, email, custom validation? maybe this schema should actually be in golang
+#          // implicity call validate in middleware
+
+    # autogens both the endpoints for other services to call, and the handlers in this service.
+    # golang code generation
+    # python code generation
+    # some kind of general codegen tool?
+    # include validation
+
+#  ->
+#
+#  transactions, err := serviceapimonzo.GetTransactions{
+#AccountId: "some-id-here",
+#}.Send(ctx).DecodeResponse()
+#
+#  ->
+#
+#for endpoint in endpoints:
+
+
+

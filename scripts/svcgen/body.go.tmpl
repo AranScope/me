@@ -1,0 +1,46 @@
+const (
+	{{.CamelCasePath}}Url = "http://service.monzo/{{.Path}}"
+)
+
+{{.RequestBody}}
+
+type {{.LetterCaseEntity}}Future struct {
+	Response *http.Response
+	Error    error
+}
+
+{{.ResponseBody}}
+
+func (r *{{.LetterCaseEntity}}Request) Send(ctx context.Context) *{{.LetterCaseEntity}}Future {
+	body, err := json.Marshal(r)
+	if err != nil {
+		panic(err)
+	}
+
+	rsp, err := http.Post({{.CamelCasePath}}Url, "application/json", bytes.NewReader(body))
+
+	return &{{.LetterCaseEntity}}Future{
+		Response: rsp,
+		Error:    err,
+	}
+}
+
+func (f *{{.LetterCaseEntity}}Future) Decode() (*{{.LetterCaseEntity}}, error) {
+	if f.Error != nil {
+		return nil, f.Error
+	}
+
+	rspBytes, err := ioutil.ReadAll(f.Response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	{{.LowerCaseEntity}} := {{.LetterCaseEntity}}{}
+
+	err = json.Unmarshal(rspBytes, {{.LowerCaseEntity}})
+	if err != nil {
+		return nil, err
+	}
+
+	return &{{.LowerCaseEntity}}, nil
+}
