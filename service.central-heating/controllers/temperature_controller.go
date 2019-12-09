@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/AranScope/me/service.tplink-smart-plug/types"
+	"github.com/AranScope/me/local/service.tplink-smart-plug/types"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,8 +14,8 @@ import (
 
 var (
 	CurrentTemp   float64 = 20
-	TargetTemp    float64 = 20 // if temp hits target, switch off
-	Threshold     float64 = 1  // if delta goes below threshold, switch on
+	TargetTemp            = 18.8 // if temp hits target, switch off
+	Threshold             = 0.1  // if delta goes below threshold, switch on
 	RadiatorState         = "on"
 )
 
@@ -33,10 +33,12 @@ func Start() {
 
 type TemperatureResponse struct {
 	Temperature float64 `json:"temperature"`
+	HeatIndex   float64 `json:"heat_index"`
+	Humidity    float64 `json:"humidity"`
 }
 
 func getCurrentTemperature() (float64, error) {
-	rsp, err := http.Get(fmt.Sprintf("%s:%s/temp", os.Getenv("SENSOR_NODE_IP"), os.Getenv("SENSOR_NODE_PORT")))
+	rsp, err := http.Get(fmt.Sprintf("http://%s:%s/data", os.Getenv("SENSOR_NODE_IP"), os.Getenv("SENSOR_NODE_PORT")))
 	if err != nil {
 		return 0, err
 	}
@@ -56,12 +58,12 @@ func getCurrentTemperature() (float64, error) {
 }
 
 func setRadiatorState(state string) error {
-	js, err := json.Marshal(types.PatchPlugBody{State: "off"})
+	js, err := json.Marshal(types.PatchPlugBody{State: state})
 	if err != nil {
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, "http://service.tplink-smart-plug:8080/plug/some-plug-address-here", bytes.NewReader(js))
+	req, err := http.NewRequest(http.MethodPatch, "http://localhost:8082/plug/192.168.1.119", bytes.NewReader(js))
 	if err != nil {
 		return err
 	}
@@ -93,7 +95,7 @@ func Tick() {
 	if CurrentTemp > TargetTemp {
 		if RadiatorState == "on" {
 			log.Printf("switching radiator off")
-			err := setRadiatorState("on")
+			err := setRadiatorState("off")
 			if err != nil {
 				log.Println(err.Error())
 				return
@@ -103,7 +105,7 @@ func Tick() {
 	} else if deltaTemp > Threshold {
 		if RadiatorState == "off" {
 			log.Printf("switching radiator on")
-			err := setRadiatorState("off")
+			err := setRadiatorState("on")
 			if err != nil {
 				log.Println(err.Error())
 				return

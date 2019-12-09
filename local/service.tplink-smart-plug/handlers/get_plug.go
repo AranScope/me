@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/AranScope/hs1xxplug"
-	"github.com/AranScope/me/service.tplink-smart-plug/types"
+	"github.com/AranScope/me/local/service.tplink-smart-plug/types"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 )

@@ -120,4 +120,3 @@ services:
       - 8888:8888
     env_file:
       - service.chronograf/env.chronograf
-
