@@ -12,7 +12,7 @@
 #define STAPSK  ""
 #endif
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define SENSOR_READ_DELAY_MS 5000
 
@@ -43,6 +43,9 @@ void handleRoot() {
 void setup(void) {
 
   Serial.begin(115200);
+  delay(100);
+  pinMode(DHTPIN, INPUT);
+  dht.begin();
 
   Wire.begin(2,14);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3c)) {
