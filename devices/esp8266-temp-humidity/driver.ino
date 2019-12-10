@@ -14,7 +14,7 @@
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels 
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define SENSOR_READ_DELAY_MS 1000
+#define SENSOR_READ_DELAY_MS 5000
 
 const char* ssid = STASSID;
 const char* password = STAPSK;
