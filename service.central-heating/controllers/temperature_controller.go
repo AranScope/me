@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/AranScope/me/local/service.tplink-smart-plug/types"
+	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -63,7 +63,7 @@ func setRadiatorState(state string) error {
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, "http://localhost:8082/plug/192.168.1.119", bytes.NewReader(js))
+	req, err := http.NewRequest(http.MethodPatch, "http://service.tplink-smart-plug:8082/plug/192.168.1.119", bytes.NewReader(js))
 	if err != nil {
 		return err
 	}
