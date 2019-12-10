@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 )
 
@@ -31,6 +32,15 @@ func (s *Service) WithRouter(port int, router http.Handler) *Service {
 
 func (s *Service) Start() {
 	if s.Router != nil {
+
+		go (func() {
+			http.Handle("/metrics", promhttp.Handler())
+			err := http.ListenAndServe(":2112", nil)
+			if err != nil {
+				panic(err)
+			}
+		})()
+
 		err := http.ListenAndServe(fmt.Sprintf(":%d", s.Port), s.Router)
 		if err != nil {
 			panic(err)
