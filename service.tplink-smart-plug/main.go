@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/AranScope/me/common/service"
-	"github.com/AranScope/me/local/service.tplink-smart-plug/handlers"
+	"github.com/AranScope/me/service.tplink-smart-plug/handlers"
 )
 
 func main() {

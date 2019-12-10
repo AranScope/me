@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/AranScope/hs1xxplug"
-	"github.com/AranScope/me/local/service.tplink-smart-plug/types"
+	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"

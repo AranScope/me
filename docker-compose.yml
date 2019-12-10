@@ -9,6 +9,13 @@ services:
       - 9090:9090
     volumes:
       - ./service.prometheus:/etc/prometheus
+
+  service.tplink-smart-plug:
+    build:
+      context: service.tplink-smart-plug
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
   
 #  service.browser:
 #    build:
