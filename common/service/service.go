@@ -13,11 +13,6 @@ type Service struct {
 }
 
 func Init(svcName string) *Service {
-	// todo: configure prometheus metrics here or something? Or do we want to do envoy here? What does monzo do in bedrock?
-	// todo: how can I make this more transport independent?
-	//  - generate request clients based on some schema definitions for endpoints?
-	// 		- protobuf?
-	//		- yaml?
 	svc := Service{
 		Name: svcName,
 	}

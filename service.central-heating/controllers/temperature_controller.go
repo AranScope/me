@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/AranScope/me/common/metrics"
 	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"io/ioutil"
 	"log"
@@ -83,6 +84,8 @@ func setRadiatorState(state string) error {
 }
 
 func Tick() {
+	metrics.Float("target_temperature_celsius", TargetTemp)
+
 	t, err := getCurrentTemperature()
 	if err != nil {
 		log.Println(err.Error())
