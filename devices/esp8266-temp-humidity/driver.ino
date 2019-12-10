@@ -8,8 +8,8 @@
 #include <Wire.h>
 
 #ifndef STASSID
-#define STASSID "SSE Broadband F7C185"
-#define STAPSK  "ehste4CPnqrCezpY"
+#define STASSID ""
+#define STAPSK  ""
 #endif
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels 
