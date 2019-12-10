@@ -125,24 +125,24 @@ func Tick() {
 
 	if CurrentTemp > TargetTemp {
 		if radiatorState.State == "on" {
-			metrics.Float("radiator_state", 1)
 			log.Printf("switching radiator off")
 			err := setRadiatorState("off")
 			if err != nil {
 				log.Println(err.Error())
 				return
 			}
+			metrics.Float("radiator_state", 0)
 		}
 
 	} else if deltaTemp > Threshold {
 		if radiatorState.State == "off" {
-			metrics.Float("radiator_state", 0)
 			log.Printf("switching radiator on")
 			err := setRadiatorState("on")
 			if err != nil {
 				log.Println(err.Error())
 				return
 			}
+			metrics.Float("radiator_state", 1)
 		}
 	}
 }
