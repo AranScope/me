@@ -1,11 +1,19 @@
 version: '3.6'
 
 services:
-
-  service.browser:
+  service.prometheus:
     build:
-      context: service.browser
+      context: service.prometheus
       dockerfile: Dockerfile
+    ports:
+      - 9090:9090
+    volumes:
+      - ./service.prometheus:/etc/prometheus
+  
+#  service.browser:
+#    build:
+#      context: service.browser
+#      dockerfile: Dockerfile
 
   service.api.vanguard-investor:
     build:
@@ -15,7 +23,7 @@ services:
       - 3002:8080
     env_file:
       - service.api.vanguard-investor/env.vanguard-investor
-      - env.vault
+      - service.vault/env.vault
 
   service.api.marcus:
     build:
@@ -25,7 +33,7 @@ services:
       - 3005:8080
     env_file:
       - service.api.marcus/env.marcus
-      - env.vault
+      - service.vault/env.vault
 
   service.api.monzo:
     build:
@@ -35,7 +43,7 @@ services:
       - 3004:8080
     env_file:
       - service.api.monzo/env.monzo
-      - env.vault
+      - service.vault/env.vault
 
   service.vault:
     build:
@@ -98,7 +106,7 @@ services:
       - 3003:3000
     env_file:
       - service.grafana/env.grafana
-    user: "472"
+    user: "1000"
     links:
       - service.influxdb
     volumes:
