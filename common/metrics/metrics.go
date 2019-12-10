@@ -1,6 +1,8 @@
 package metrics
 
 import (
+	"fmt"
+	"github.com/AranScope/me/common/service"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -10,11 +12,14 @@ var gauges = map[string]prometheus.Gauge{
 
 func Float(name string, value float64) {
 	var gauge prometheus.Gauge
-	if _, exists := gauges[name]; !exists {
+	
+	nameWithServicePrefix := fmt.Sprintf("%s_%s", service.Name(), name)
+
+	if _, exists := gauges[nameWithServicePrefix]; !exists {
 		gauge = promauto.NewGauge(prometheus.GaugeOpts{
-			Name: name,
+			Name: nameWithServicePrefix,
 		})
-		gauges[name] = gauge
+		gauges[nameWithServicePrefix] = gauge
 	}
 
 	if gauge != nil {

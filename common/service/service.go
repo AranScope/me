@@ -12,11 +12,21 @@ type Service struct {
 	Port   int
 }
 
+var svc *Service
+
+func Name() string {
+	if svc != nil {
+		return svc.Name
+	}
+	return "uninitialised"
+}
+
 func Init(svcName string) *Service {
-	svc := Service{
+	svc = &Service{
 		Name: svcName,
 	}
-	return &svc
+
+	return svc
 }
 
 func (s *Service) WithRouter(port int, router http.Handler) *Service {
