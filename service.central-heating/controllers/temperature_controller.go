@@ -106,6 +106,8 @@ func setRadiatorState(state string) error {
 }
 
 func Tick() {
+	metrics.Float("switch_on_threshold_temperature_celsius", TargetTemp-Threshold)
+	metrics.Float("switch_off_threshold_temperature_celsius", TargetTemp+Threshold)
 	metrics.Float("target_temperature_celsius", TargetTemp)
 
 	t, err := getCurrentTemperature()

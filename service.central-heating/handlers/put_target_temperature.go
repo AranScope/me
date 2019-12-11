@@ -10,6 +10,7 @@ import (
 
 type SetTargetTemperatureRequest struct {
 	Temperature float64 `json:"temperature"`
+	Threshold   float64 `json:"threshold`
 }
 
 func handleSetTargetTemperature(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -27,6 +28,7 @@ func handleSetTargetTemperature(w http.ResponseWriter, req *http.Request, _ http
 	}
 
 	controllers.TargetTemp = body.Temperature
+	controllers.Threshold = body.Threshold
 
 	w.WriteHeader(200)
 	_, _ = w.Write(bodyBytes)

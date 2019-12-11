@@ -30,6 +30,7 @@ func Float(name string, value float64) {
 	}
 
 	if gauge != nil {
+		// todo: is this correct?
 		gauge.SetToCurrentTime()
 		gauge.Set(value)
 	}
