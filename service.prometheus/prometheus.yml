@@ -45,3 +45,7 @@ scrape_configs:
   - job_name: 'service.central-heating'
     static_configs:
       - targets: ['service.central-heating:2112']
+  
+  - job_name: 'service.caddy'
+    static_configs:
+      - targets: ['service.caddy:9180']
