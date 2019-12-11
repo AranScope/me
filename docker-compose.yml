@@ -22,14 +22,15 @@ services:
       context: service.central-heating
       dockerfile: Dockerfile
     ports:
+      - 2112:2112
       - 8081:8081
     env_file:
       - service.central-heating/env.central-heating
   
-#  service.browser:
-#    build:
-#      context: service.browser
-#      dockerfile: Dockerfile
+  service.browser:
+    build:
+      context: service.browser
+      dockerfile: Dockerfile
 
   service.api.vanguard-investor:
     build:
