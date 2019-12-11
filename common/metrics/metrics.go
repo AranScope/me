@@ -18,18 +18,15 @@ func serviceNameToMetricName(name string) string {
 }
 
 func Float(name string, value float64) {
-	var gauge prometheus.Gauge
-
 	nameWithServicePrefix := fmt.Sprintf("%s_%s", serviceNameToMetricName(service.Name()), name)
+	gauge, exists := gauges[nameWithServicePrefix]
 
-	if _, exists := gauges[nameWithServicePrefix]; !exists {
+	if !exists {
 		gauge = promauto.NewGauge(prometheus.GaugeOpts{
 			Name: nameWithServicePrefix,
 		})
 		gauges[nameWithServicePrefix] = gauge
 	}
 
-	if gauge != nil {
-		gauge.Set(value)
-	}
+	gauge.Set(value)
 }
