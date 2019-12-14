@@ -74,7 +74,7 @@ func Tick() {
 	todaysSchedule := schedule[currTime.Weekday()]
 
 	for i := 0; i < len(todaysSchedule)-1; i++ {
-		if todaysSchedule[i+1].time.Hours() > float64(currTime.Hour()) {
+		if todaysSchedule[i+1].time.Hours() >= float64(currTime.Hour()) {
 			// use the current time
 			temp := todaysSchedule[i].temperature
 			err := changeTemperature(temp)
