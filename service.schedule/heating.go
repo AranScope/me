@@ -81,6 +81,7 @@ func Tick() {
 			if err != nil {
 				log.Error("error changing temperature: %v", err)
 			}
+			break
 		}
 	}
 }
