@@ -64,9 +64,7 @@ func every(d time.Duration, f func()) {
 }
 
 func Start() {
-	go func() {
-		every(time.Minute*5, Tick)
-	}()
+	every(time.Minute*5, Tick)
 }
 
 func Tick() {
