@@ -17,6 +17,11 @@ services:
     ports:
       - 8082:8082
 
+  service.schedule:
+    build:
+      context: service.schedule
+      dockerfile: Dockerfile
+
   service.central-heating:
     build:
       context: service.central-heating
@@ -27,10 +32,10 @@ services:
     env_file:
       - service.central-heating/env.central-heating
   
-  service.browser:
-    build:
-      context: service.browser
-      dockerfile: Dockerfile
+  #service.browser:
+  #  build:
+  #    context: service.browser
+  #    dockerfile: Dockerfile
 
   service.api.vanguard-investor:
     build:
@@ -151,8 +156,8 @@ services:
       context: service.caddy
       dockerfile: Dockerfile
     volumes:
-      - service.caddy/certs:/root/.caddy
-      - service.caddy/www:/var/www
+      - ./service.caddy/certs:/root/.caddy
+      - ./service.caddy/www:/var/www
     ports:
       - 80:80
       - 443:443
