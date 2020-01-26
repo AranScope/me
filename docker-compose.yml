@@ -1,12 +1,21 @@
 version: '3.6'
 
 services:
+  service.webthings-gateway:
+    build:
+      context: service.webthings-gateway
+      dockerfile: Dockerfile
+    network_mode: host
+    ports:
+      - 8080:8080
+      - 4443:4443
+    volumes:
+      - ./service.webthings-gateway/data:/home/node/.mozilla-iot
+   
   service.prometheus:
     build:
       context: service.prometheus
       dockerfile: Dockerfile
-    ports:
-      - 9090:9090
     volumes:
       - ./service.prometheus:/etc/prometheus
 

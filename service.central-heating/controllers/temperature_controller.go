@@ -42,7 +42,7 @@ type PlugState struct {
 }
 
 func getRadiatorState() (*PlugState, error) {
-	rsp, err := http.Get("http://service.tplink-smart-plug:8082/plug/192.168.1.119")
+	rsp, err := http.Get("http://service.tplink-smart-plug:8082/plug/192.168.1.102")
 	if err != nil {
 		return nil, err
 	}
