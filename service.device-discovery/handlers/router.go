@@ -7,6 +7,7 @@ import (
 
 func Router() http.Handler {
 	router := httprouter.New()
-	router.DELETE("/device/delete/:id", handleDeleteDevice)
+	router.GET("/devices", handleGetDevices)
+	router.GET("/device/:id", handleGetDevice)
 	return router
 }

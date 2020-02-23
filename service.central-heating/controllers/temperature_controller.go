@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/AranScope/me/common/metrics"
+	"github.com/AranScope/me/common/timeutils"
 	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"io/ioutil"
 	"log"
@@ -19,15 +20,9 @@ var (
 	Threshold           = 0.1  // if delta goes below threshold, switch on
 )
 
-func every(d time.Duration, f func()) {
-	for range time.Tick(d) {
-		f()
-	}
-}
-
 func Start() {
 	go func() {
-		every(time.Second*5, Tick)
+		timeutils.Every(time.Second*5, Tick)
 	}()
 }
 
