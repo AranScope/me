@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/AranScope/me/common/timeutils"
 	log "github.com/mgutz/logxi/v1"
 	"net/http"
 	"strings"
@@ -57,14 +58,9 @@ var schedule = map[time.Weekday][]ScheduledTemperature{
 	time.Sunday:    weekend,
 }
 
-func every(d time.Duration, f func()) {
-	for range time.Tick(d) {
-		f()
-	}
-}
 
 func Start() {
-	every(time.Minute*5, Tick)
+	timeutils.Every(time.Minute*5, Tick)
 }
 
 func Tick() {
