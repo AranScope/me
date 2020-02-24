@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/AranScope/me/service.central-heating/handlers"
 	"github.com/AranScope/me/service.device-discovery/controller"
 	"github.com/AranScope/me/service.tplink-smart-plug/types"
 	"github.com/jasonlvhit/gocron"
@@ -58,16 +59,65 @@ func switchOffPlug(ip string) error {
 	return nil
 }
 
+func setTargetTemperature(temp float64) error {
+	js, err := json.Marshal(&handlers.SetTargetTemperatureRequest{
+		Temperature: temp,
+		Threshold:   0.5,
+	})
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, "http://service.central-heating:8081/temperature", bytes.NewReader(js))
+	if err != nil {
+		return err
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("status returned not 200: actual: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
 func Init() {
-	plugs := []string{"CC:32:E5:D7:7D:21", "CC:32:E5:D7:7D:86", "B0:BE:76:D6:D5:74"}
+	//plugs := []string{"CC:32:E5:D7:7D:21", "CC:32:E5:D7:7D:86", "B0:BE:76:D6:D5:74"}
+	//go (func() {
+	//	gocron.Every(1).Day().At("22:30").Do(func() {
+	//		for _, mac := range plugs {
+	//			ip, err := getPlugIpAddress(mac)
+	//			if err != nil {
+	//				continue
+	//			}
+	//			_ = switchOffPlug(ip)
+	//		}
+	//	})
+	//	<-gocron.Start()
+	//})()
 	go (func() {
 		gocron.Every(1).Day().At("22:30").Do(func() {
-			for _, mac := range plugs {
-				ip, err := getPlugIpAddress(mac)
-				if err != nil {
-					continue
-				}
-				_ = switchOffPlug(ip)
+			temp := 10.0
+			fmt.Printf("🌡 Setting temperature to %.1f\n", temp)
+			err := setTargetTemperature(10)
+			if err != nil {
+				fmt.Printf("❌ Failed to set temperature: %v", err)
+			}
+		})
+		<-gocron.Start()
+	})()
+	go (func() {
+		gocron.Every(1).Day().At("18:00").Do(func() {
+			temp := 10.0
+			fmt.Printf("🌡 Setting temperature to %.1f\n", temp)
+			err := setTargetTemperature(18)
+			if err != nil {
+				fmt.Printf("❌ Failed to set temperature: %v", err)
 			}
 		})
 		<-gocron.Start()
