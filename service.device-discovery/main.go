@@ -10,6 +10,6 @@ func main() {
 	controller.Init()
 	service.
 		Init("service.device-discovery").
-		WithRouter(8080, handlers.Router()).
+		WithRouter(8087, handlers.Router()).
 		Start()
 }
