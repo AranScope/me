@@ -104,7 +104,7 @@ func Init() {
 		gocron.Every(1).Day().At("22:30").Do(func() {
 			temp := 10.0
 			fmt.Printf("🌡 Setting temperature to %.1f\n", temp)
-			err := setTargetTemperature(10)
+			err := setTargetTemperature(temp)
 			if err != nil {
 				fmt.Printf("❌ Failed to set temperature: %v", err)
 			}
@@ -113,9 +113,9 @@ func Init() {
 	})()
 	go (func() {
 		gocron.Every(1).Day().At("18:00").Do(func() {
-			temp := 10.0
+			temp := 18.0
 			fmt.Printf("🌡 Setting temperature to %.1f\n", temp)
-			err := setTargetTemperature(18)
+			err := setTargetTemperature(temp)
 			if err != nil {
 				fmt.Printf("❌ Failed to set temperature: %v", err)
 			}
