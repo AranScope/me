@@ -5,6 +5,7 @@ COPY . .
 
 RUN go get -d -v ./...
 RUN go build -o main
+RUN apt-get install -y nmap
 
 CMD ["./main"]
 
