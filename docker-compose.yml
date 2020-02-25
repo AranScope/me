@@ -31,12 +31,19 @@ services:
       context: service.schedule
       dockerfile: Dockerfile
 
+  service.device-discovery:
+    build:
+      context: service.device-discovery
+      dockerfile: Dockerfile
+    ports:
+      - 8087:8087
+    network_mode: host
+
   service.central-heating:
     build:
       context: service.central-heating
       dockerfile: Dockerfile
     ports:
-      - 2112:2112
       - 8081:8081
     env_file:
       - service.central-heating/env.central-heating
