@@ -9,8 +9,12 @@ import (
 
 func handleGetDevices(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
 	var devices []controller.Device
+	visited := map[string]interface{}{}
 	for _, device := range controller.DeviceRegistry {
-		devices = append(devices, device)
+		if _, ok := visited[device.MacAddr]; !ok {
+			devices = append(devices, device)
+			visited[device.MacAddr] = struct{}{}
+		}
 	}
 
 	bytes, err := json.Marshal(devices)
