@@ -88,9 +88,11 @@ func Init() {
 			panic(err)
 		}
 
+		newRegistry := map[string]Device{}
 		for _, device := range devices {
-			DeviceRegistry[device.MacAddr] = device
-			DeviceRegistry[device.Name] = device
+			newRegistry[device.MacAddr] = device
+			newRegistry[device.Name] = device
+			DeviceRegistry = newRegistry
 		}
 		fmt.Print("✅ Finished updating\n")
 
