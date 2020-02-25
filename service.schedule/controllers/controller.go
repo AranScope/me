@@ -165,23 +165,16 @@ func Init() {
 }
 
 func getCurrentTargetTemperature() (float64, error) {
-
-	req, err := http.NewRequest(http.MethodPut, "http://service.central-heating:8081/temperature", bytes.NewReader(js))
+	rsp, err := http.Get("http://service.central-heating:8081/temperature")
 	if err != nil {
 		return 0, err
 	}
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return 0, err
+	if rsp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("status returned not 200: actual: %d", rsp.StatusCode)
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return 0, fmt.Errorf("status returned not 200: actual: %d", resp.StatusCode)
-	}
-
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := ioutil.ReadAll(rsp.Body)
 	if err != nil {
 		return 0, err
 	}
