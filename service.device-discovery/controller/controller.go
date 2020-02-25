@@ -65,7 +65,7 @@ var DeviceRegistry = map[string]Device{}
 const scanInterval = time.Hour
 
 func findDevices() ([]Device, error) {
-	cmd := exec.Command("nmap", "-T0", "-sn", "-oX", "-", "192.168.1.0/24")
+	cmd := exec.Command("nmap", "-sn", "-oX", "-", "192.168.1.0/24")
 	output, err := cmd.Output()
 	if err != nil {
 		return nil, err
