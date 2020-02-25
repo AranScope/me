@@ -12,6 +12,11 @@ import (
 	"net/http"
 )
 
+type GetTargetTemperatureResponse struct {
+	TargetTemperature  float64 `json:"target_temperature"`
+	CurrentTemperature float64 `json:"current_temperature"`
+}
+
 func getPlugIpAddress(mac string) (string, error) {
 	rsp, err := http.Get("http://service.device-discovery/device/" + mac)
 	if err != nil {
@@ -122,4 +127,72 @@ func Init() {
 		})
 		<-gocron.Start()
 	})()
+	go (func() {
+		absentTemp := 10.0
+		prevTemp := 0.0
+
+		gocron.Every(5).Minutes().Do(func() {
+			targetTemp, err := getCurrentTargetTemperature()
+			if err != nil {
+				fmt.Printf("❌ Failed to get device presence: %v", err)
+				return
+			}
+			if targetTemp != absentTemp {
+				rsp, err := http.Get("http://service.device-discovery/device/OnePlus3.lan")
+				if err != nil {
+					fmt.Printf("❌ Failed to get device presence: %v", err)
+					return
+				}
+				if rsp.StatusCode != 200 {
+					prevTemp = targetTemp
+					fmt.Printf("🌡 User absent, setting temperature to %.1f\n", absentTemp)
+					err := setTargetTemperature(absentTemp)
+					if err != nil {
+						fmt.Printf("❌ Failed to set temperature: %v", err)
+					}
+				} else {
+					fmt.Printf("🌡 User present, Setting temperature back to %.1f\n", targetTemp)
+					err := setTargetTemperature(prevTemp)
+					if err != nil {
+						fmt.Printf("❌ Failed to set temperature: %v", err)
+					}
+				}
+			}
+		})
+		<-gocron.Start()
+	})()
+
+}
+
+func getCurrentTargetTemperature() (float64, error) {
+
+	req, err := http.NewRequest(http.MethodPut, "http://service.central-heating:8081/temperature", bytes.NewReader(js))
+	if err != nil {
+		return 0, err
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return 0, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("status returned not 200: actual: %d", resp.StatusCode)
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return 0, err
+	}
+
+	body := GetTargetTemperatureResponse{
+	}
+
+	err = json.Unmarshal(bytes, &body)
+	if err != nil {
+		return 0, err
+	}
+
+	return body.TargetTemperature, nil
 }

@@ -90,6 +90,7 @@ func Init() {
 
 		for _, device := range devices {
 			DeviceRegistry[device.MacAddr] = device
+			DeviceRegistry[device.Name] = device
 		}
 		fmt.Print("✅ Finished updating\n")
 
