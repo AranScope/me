@@ -62,7 +62,7 @@ func (n *NmapResponse) toDevices() []Device {
 
 var DeviceRegistry = map[string]Device{}
 
-const scanInterval = time.Hour
+const scanInterval = time.Minute * 5
 
 func findDevices() ([]Device, error) {
 	cmd := exec.Command("nmap", "-sn", "-oX", "-", "192.168.1.0/24")
