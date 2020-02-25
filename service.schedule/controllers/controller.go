@@ -138,7 +138,7 @@ func Init() {
 				return
 			}
 			if targetTemp != absentTemp {
-				rsp, err := http.Get("http://service.device-discovery/device/OnePlus3.lan")
+				rsp, err := http.Get("http://service.device-discovery:8087/device/OnePlus3.lan")
 				if err != nil {
 					fmt.Printf("❌ Failed to get device presence: %v", err)
 					return
