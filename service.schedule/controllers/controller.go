@@ -112,8 +112,8 @@ func Init() {
 		<-gocron.Start()
 	})()
 	go (func() {
-		gocron.Every(1).Day().At("18:00").Do(func() {
-			temp := 18.0
+		gocron.Every(1).Day().At("19:00").Do(func() {
+			temp := 16.5
 			fmt.Printf("🌡 Setting temperature to %.1f\n", temp)
 			err := setTargetTemperature(temp)
 			if err != nil {
