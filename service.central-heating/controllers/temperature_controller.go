@@ -16,7 +16,7 @@ import (
 
 var (
 	CurrentTemp float64 = 20
-	TargetTemp          = 18.8 // if temp hits target, switch off
+	TargetTemp          = 18.5 // if temp hits target, switch off
 	Threshold           = 0.1  // if delta goes below threshold, switch on
 )
 
